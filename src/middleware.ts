@@ -31,7 +31,7 @@ export async function middleware(req: NextRequest) {
   response.headers.set('X-Robots-Tag', 'noindex, nofollow');
 
   if (PUBLIC_ROUTES.includes(pathname)) {
-    if (isLoggedIn && AUTH_ROUTES.includes(pathname)) {
+    if (isLoggedIn && (pathname === '/' || AUTH_ROUTES.includes(pathname))) {
       return NextResponse.redirect(new URL('/dashboard', req.url));
     }
     return response;
@@ -65,6 +65,7 @@ export const config = {
     '/((?!_next/static|_next/image|favicon.ico|.*\\\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
+
 
 
 
