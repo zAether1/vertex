@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+﻿import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 
@@ -8,14 +8,15 @@ const ADMIN_ROUTES = ['/admin'];
 const ADMIN_ROLES = ['ADMIN', 'SUPER_ADMIN'];
 
 export async function middleware(req: NextRequest) {
-  if (!process.env.AUTH_SECRET) {
+  const secret = process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET;
+  if (!secret) {
     console.error('[SECURITY] FATAL: AUTH_SECRET is not set.');
     return new NextResponse('Internal Server Error: Missing AUTH_SECRET', { status: 500 });
   }
   const { pathname } = req.nextUrl;
   const token = await getToken({ 
     req, 
-    secret: process.env.AUTH_SECRET as string,
+    secret: secret as string,
     salt: process.env.NODE_ENV === 'production' ? '__Secure-vertex.session-token' : 'authjs.session-token',
     secureCookie: process.env.NODE_ENV === 'production'
   });
@@ -64,6 +65,7 @@ export const config = {
     '/((?!_next/static|_next/image|favicon.ico|.*\\\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
+
 
 
 
