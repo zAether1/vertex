@@ -60,7 +60,7 @@ export async function GET(req: NextRequest) {
       if (r.status === 'FULFILLED' && r.inventory?.encryptedPayload) {
         try {
           secretCode = decrypt(r.inventory.encryptedPayload);
-        } catch (err) {
+        } catch {
           console.error('[API:Redemptions] Decryption failed for redemption:', r.id);
           // Do not expose the exact error to the user
         }

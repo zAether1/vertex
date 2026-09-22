@@ -1,0 +1,74 @@
+﻿.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.15s ease, opacity 0.15s ease, transform 0.1s ease;
+  padding: 0 16px;
+}
+
+.button:active {
+  transform: scale(0.98);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Variants */
+.primary {
+  background-color: var(--color-blue-cyan-500, #0075ff);
+  color: #ffffff;
+}
+.primary:hover {
+  background-color: var(--color-blue-cyan-600, #0064d9);
+}
+
+.secondary {
+  background-color: rgba(179, 182, 189, 0.12);
+  color: #ffffff;
+}
+.secondary:hover {
+  background-color: rgba(179, 182, 189, 0.2);
+}
+
+.danger {
+  background-color: var(--color-red-500, #ff0101);
+  color: #ffffff;
+}
+.danger:hover {
+  background-color: var(--color-red-600, #d90101);
+}
+
+/* Sizes */
+.sm {
+  height: 32px;
+  font-size: 13px;
+  border-radius: 8px;
+}
+
+.md {
+  height: 44px;
+  border-radius: 12px;
+}
+
+.lg {
+  height: 56px;
+  font-size: 16px;
+  border-radius: 14px;
+}
+
+/* Icon Spacing */
+.iconLeft {
+  margin-right: 8px;
+}
+.iconRight {
+  margin-left: 8px;
+}

@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { Package, Copy, CheckCircle, Clock, XCircle, Key, Eye, EyeOff, AlertCircle } from 'lucide-react';
@@ -54,7 +54,7 @@ function CodeReveal({ code }: { code: string }) {
       await navigator.clipboard.writeText(code);
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
-    } catch (err) {
+    } catch (err: unknown) {
       // Fallback si Clipboard API falla
       const textArea = document.createElement('textarea');
       textArea.value = code;
@@ -69,17 +69,17 @@ function CodeReveal({ code }: { code: string }) {
     <div style={s.codeSection}>
       <div style={s.codeBox}>
         <Key size={16} color="var(--color-text-muted)" />
-        <span style={revealed ? {} : s.codeHidden}>{revealed ? code : '••••••••••••••••'}</span>
+        <span style={revealed ? {} : s.codeHidden}>{revealed ? code : 'â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢â€¢'}</span>
       </div>
       <div style={{ display: 'flex', gap: '12px' }}>
         <button style={s.actionBtn} onClick={() => setRevealed(!revealed)}>
           {revealed ? <EyeOff size={14} /> : <Eye size={14} />}
-          {revealed ? 'Ocultar código' : 'Mostrar código'}
+          {revealed ? 'Ocultar cÃ³digo' : 'Mostrar cÃ³digo'}
         </button>
         {revealed && (
           <button style={{ ...s.actionBtn, color: copied ? 'var(--color-success)' : 'var(--color-accent-primary)' }} onClick={copyToClipboard}>
             {copied ? <CheckCircle size={14} /> : <Copy size={14} />}
-            {copied ? 'Código copiado' : 'Copiar código'}
+            {copied ? 'CÃ³digo copiado' : 'Copiar cÃ³digo'}
           </button>
         )}
       </div>
@@ -98,12 +98,12 @@ export default function RedemptionsClient() {
       try {
         const res = await fetch('/api/redemptions/me');
         if (!res.ok) {
-          if (res.status === 429) throw new Error('Demasiadas solicitudes. Intenta más tarde.');
+          if (res.status === 429) throw new Error('Demasiadas solicitudes. Intenta mÃ¡s tarde.');
           throw new Error('Error al cargar redenciones');
         }
         const data = await res.json();
         setItems(data.data || []);
-      } catch (err) {
+      } catch (err: unknown) {
         setError(err instanceof Error ? err.message : 'Error desconocido');
       } finally {
         setLoading(false);
@@ -145,8 +145,8 @@ export default function RedemptionsClient() {
       ) : items.length === 0 ? (
         <div style={s.emptyState}>
           <Package size={48} color="var(--color-border-secondary)" style={{ marginBottom: '16px' }} />
-          <h3 style={{ fontSize: 'var(--text-xl)', color: 'var(--color-text-primary)', marginBottom: '8px' }}>Aún no tienes recompensas</h3>
-          <p>Visita la tienda y canjea tus puntos por recompensas increíbles.</p>
+          <h3 style={{ fontSize: 'var(--text-xl)', color: 'var(--color-text-primary)', marginBottom: '8px' }}>AÃºn no tienes recompensas</h3>
+          <p>Visita la tienda y canjea tus puntos por recompensas increÃ­bles.</p>
         </div>
       ) : (
         <div style={s.grid} ref={listRef}>
@@ -182,3 +182,6 @@ export default function RedemptionsClient() {
     </div>
   );
 }
+
+
+

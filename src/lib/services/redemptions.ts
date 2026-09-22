@@ -1,5 +1,5 @@
-/**
- * Vertex â€” Redemption Service
+﻿/**
+ * Vertex Ã¢â‚¬â€ Redemption Service
  *
  * Handles the full reward redemption flow:
  * 1. Verify balance
@@ -25,7 +25,7 @@ import { executePointOperation } from './points';
 import { createAuditLog } from './audit';
 import { generateIdempotencyKey } from '@/lib/security';
 
-/* â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Types Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 
 export interface RedeemInput {
   userId: string;
@@ -39,7 +39,7 @@ export interface RedeemResult {
   error?: string;
 }
 
-/* â”€â”€â”€ Redeem Reward â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
+/* Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ Redeem Reward Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬Ã¢â€â‚¬ */
 
 export async function redeemReward(input: RedeemInput): Promise<RedeemResult> {
   try {
@@ -187,7 +187,7 @@ export async function redeemReward(input: RedeemInput): Promise<RedeemResult> {
       return { success: true, redemptionId: redemption.id };
     });
 
-    // Audit log (outside transaction â€” non-critical)
+    // Audit log (outside transaction Ã¢â‚¬â€ non-critical)
     await createAuditLog({
       action: 'REDEMPTION_CREATE',
       actorId: input.userId,
@@ -202,6 +202,7 @@ export async function redeemReward(input: RedeemInput): Promise<RedeemResult> {
 
     return result;
   } catch (error: unknown) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const err = error as any;
     if (err?.code === '23505' && err?.constraint === 'redemptions_idempotency_key_key') {
       const existing = await db.query.redemptions.findFirst({ where: eq(redemptions.idempotencyKey, input.idempotencyKey) });
@@ -230,5 +231,10 @@ export async function redeemReward(input: RedeemInput): Promise<RedeemResult> {
     };
   }
 }
+
+
+
+
+
 
 

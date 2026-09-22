@@ -9,7 +9,7 @@ import { randomUUID } from 'crypto';
 const hasTestDb = !!process.env.DATABASE_URL_TEST;
 
 describe.skipIf(!hasTestDb)('PostgreSQL Concurrency Integration Tests', () => {
-  let testUserId = 'test-user-postgres-1';
+  const testUserId = 'test-user-postgres-1';
   
   beforeAll(async () => {
     if (!hasTestDb) return;

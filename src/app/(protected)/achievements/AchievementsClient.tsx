@@ -1,90 +1,128 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Lock, Medal, Star } from 'lucide-react';
+import { Lock, Medal, Star, AlertCircle } from 'lucide-react';
 import { achievements as t } from '@/lib/i18n/es';
-
-const s = {
-  page: { padding: 'var(--space-6)' } as React.CSSProperties,
-  header: { marginBottom: 'var(--space-6)' } as React.CSSProperties,
-  title: { fontFamily: 'var(--font-display)', fontSize: 'var(--text-2xl)', fontWeight: 700, letterSpacing: 'var(--tracking-tight)', color: 'var(--color-text-primary)', marginBottom: '4px' } as React.CSSProperties,
-  subtitle: { fontSize: 'var(--text-sm)', color: 'var(--color-text-tertiary)' } as React.CSSProperties,
-  grid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 'var(--space-5)' } as React.CSSProperties,
-  card: { background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border-primary)', borderRadius: 'var(--radius-lg)', padding: 'var(--space-5)', transition: 'all 0.25s', display: 'flex', flexDirection: 'column' as const, alignItems: 'center', textAlign: 'center' as const } as React.CSSProperties,
-  iconWrap: { width: 64, height: 64, borderRadius: 'var(--radius-full)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--space-4)', position: 'relative' as const } as React.CSSProperties,
-  name: { fontSize: 'var(--text-md)', fontWeight: 600, color: 'var(--color-text-primary)', marginBottom: 'var(--space-2)' } as React.CSSProperties,
-  desc: { fontSize: 'var(--text-xs)', color: 'var(--color-text-tertiary)', lineHeight: 'var(--leading-relaxed)' } as React.CSSProperties,
-  lockedCard: { opacity: 0.6, filter: 'grayscale(1)' } as React.CSSProperties,
-  lockedIcon: { position: 'absolute' as const, bottom: -4, right: -4, background: 'var(--color-bg-surface)', borderRadius: '50%', padding: 4, color: 'var(--color-text-muted)', border: '2px solid var(--color-bg-secondary)' } as React.CSSProperties,
-  rarityBadge: { fontSize: '10px', fontWeight: 700, padding: '2px 8px', borderRadius: 'var(--radius-full)', textTransform: 'uppercase' as const, letterSpacing: 'var(--tracking-wide)', marginTop: 'var(--space-3)' } as React.CSSProperties,
-};
+import styles from './Achievements.module.css';
+import { Card, CardContent } from '@/components/ui';
 
 const RARITY_COLORS: Record<string, { bg: string; text: string; icon: string }> = {
-  COMMON: { bg: 'var(--color-bg-tertiary)', text: 'var(--color-text-secondary)', icon: 'var(--color-text-muted)' },
-  UNCOMMON: { bg: 'var(--color-success-subtle)', text: 'var(--color-success)', icon: 'var(--color-success)' },
-  RARE: { bg: 'var(--color-info-subtle)', text: 'var(--color-info)', icon: 'var(--color-info)' },
-  EPIC: { bg: 'var(--color-accent-primary-subtle)', text: 'var(--color-accent-primary)', icon: 'var(--color-accent-primary)' },
-  LEGENDARY: { bg: 'var(--color-warning-subtle)', text: 'var(--color-warning)', icon: 'var(--color-warning)' },
+  COMMON: { bg: 'rgba(179, 182, 189, 0.08)', text: 'var(--color-gray-200, #a3abbb)', icon: 'var(--color-gray-300, #818794)' },
+  UNCOMMON: { bg: 'rgba(0, 217, 91, 0.15)', text: 'var(--color-green-500, #00d95b)', icon: 'var(--color-green-500, #00d95b)' },
+  RARE: { bg: 'rgba(0, 117, 255, 0.15)', text: 'var(--color-blue-cyan-500, #0075ff)', icon: 'var(--color-blue-cyan-500, #0075ff)' },
+  EPIC: { bg: 'rgba(255, 1, 1, 0.15)', text: 'var(--color-red-500, #ff0101)', icon: 'var(--color-red-500, #ff0101)' },
+  LEGENDARY: { bg: 'rgba(255, 195, 0, 0.15)', text: '#ffc300', icon: '#ffc300' },
 };
 
 interface Achievement {
-  id: string; name: string; description: string; rarity: string; unlockedAt: Date | null;
+  id: string; 
+  name: string; 
+  description: string; 
+  rarity: string; 
+  isUnlocked: boolean;
+  awardedAt: string | null;
 }
 
 export default function AchievementsClient() {
   const [achievementsList, setAchievements] = useState<Achievement[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setAchievements([
-      { id: '1', name: 'Primeros pasos', description: 'Completa tu primera misión.', rarity: 'COMMON', unlockedAt: new Date() },
-      { id: '2', name: 'Racha ganadora', description: 'Gana 5 veces seguidas en el Arcade.', rarity: 'RARE', unlockedAt: new Date() },
-      { id: '3', name: 'Comprador frecuente', description: 'Canjea 10 recompensas de la tienda.', rarity: 'EPIC', unlockedAt: null },
-      { id: '4', name: 'Millonario', description: 'Acumula 1.000.000 de puntos.', rarity: 'LEGENDARY', unlockedAt: null },
-    ]);
-    setLoading(false);
+    const fetchAchievements = async () => {
+      try {
+        const res = await fetch('/api/achievements');
+        if (!res.ok) throw new Error('Error al cargar logros');
+        const json = await res.json();
+        setAchievements(json.data || []);
+      } catch (err) {
+        setError('No se pudieron cargar los logros');
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchAchievements();
   }, []);
 
   useEffect(() => {
-    if (loading || !gridRef.current) return;
+    if (loading || !gridRef.current || achievementsList.length === 0) return;
     const init = async () => {
       try {
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (prefersReduced) return;
         const gsapModule = await import('gsap');
         const gsap = gsapModule.default || gsapModule;
-        gsap.fromTo(gridRef.current!.children, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.5, stagger: 0.05, ease: 'back.out(1.5)' });
+        gsap.fromTo(
+          gridRef.current!.children, 
+          { opacity: 0, scale: 0.9 }, 
+          { opacity: 1, scale: 1, duration: 0.5, stagger: 0.05, ease: 'back.out(1.5)' }
+        );
       } catch {}
     };
     init();
-  }, [loading]);
+  }, [loading, achievementsList]);
 
   return (
-    <div style={s.page}>
-      <div style={s.header}>
-        <h1 style={s.title}>{t.title}</h1>
-        <p style={s.subtitle}>{t.subtitle}</p>
+    <div className={styles.page}>
+      <div className={styles.header}>
+        <h1 className={styles.title}>{t.title}</h1>
+        <p className={styles.subtitle}>{t.subtitle}</p>
       </div>
+      
       {loading ? (
-        <div style={s.grid}>{[...Array(4)].map((_, i) => <div key={i} className="skeleton" style={{ ...s.card, height: 200 }} />)}</div>
+        <div className={styles.grid}>
+          {[...Array(4)].map((_, i) => (
+            <Card key={i} className={`skeleton ${styles.achievementCard}`} style={{ height: 200 }} />
+          ))}
+        </div>
+      ) : error ? (
+        <Card>
+          <CardContent style={{ padding: '24px', textAlign: 'center', color: 'var(--color-error)' }}>
+            <AlertCircle size={24} style={{ margin: '0 auto 12px' }} />
+            <p>{error}</p>
+          </CardContent>
+        </Card>
+      ) : achievementsList.length === 0 ? (
+        <Card>
+          <CardContent style={{ padding: '48px 24px', textAlign: 'center' }}>
+            <Medal size={48} color="var(--color-gray-300)" style={{ margin: '0 auto 16px', opacity: 0.5 }} />
+            <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#fff', marginBottom: '8px' }}>No hay logros disponibles</h3>
+            <p style={{ color: 'var(--color-gray-200)', fontSize: '14px' }}>Vuelve más tarde para descubrir nuevos desafíos.</p>
+          </CardContent>
+        </Card>
       ) : (
-        <div style={s.grid} ref={gridRef}>
+        <div className={styles.grid} ref={gridRef}>
           {achievementsList.map(a => {
-            const isUnlocked = !!a.unlockedAt;
+            const isUnlocked = a.isUnlocked;
             const colors = RARITY_COLORS[a.rarity] || RARITY_COLORS.COMMON;
+            
             return (
-              <div key={a.id} style={{ ...s.card, ...(!isUnlocked ? s.lockedCard : {}) }}>
-                <div style={{ ...s.iconWrap, background: colors.bg, color: colors.icon }}>
-                  {a.rarity === 'LEGENDARY' ? <Star size={32} /> : <Medal size={32} />}
-                  {!isUnlocked && <div style={s.lockedIcon}><Lock size={12} /></div>}
-                </div>
-                <div style={s.name}>{a.name}</div>
-                <div style={s.desc}>{a.description}</div>
-                <div style={{ ...s.rarityBadge, background: colors.bg, color: colors.text }}>
-                  {t.rarities[a.rarity] || a.rarity}
-                </div>
-              </div>
+              <Card 
+                key={a.id} 
+                className={`${styles.achievementCard} ${!isUnlocked ? styles.lockedCard : ''}`}
+              >
+                <CardContent style={{ padding: '24px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                  <div className={styles.iconWrap} style={{ background: colors.bg, color: colors.icon }}>
+                    {a.rarity === 'LEGENDARY' ? <Star size={32} /> : <Medal size={32} />}
+                    {!isUnlocked && (
+                      <div className={styles.lockedIcon}>
+                        <Lock size={12} />
+                      </div>
+                    )}
+                  </div>
+                  <div className={styles.name}>{a.name}</div>
+                  <div className={styles.desc}>{a.description}</div>
+                  <div className={styles.rarityBadge} style={{ background: colors.bg, color: colors.text }}>
+                    {t.rarities[a.rarity as keyof typeof t.rarities] || a.rarity}
+                  </div>
+                  {isUnlocked && a.awardedAt && (
+                    <div style={{ fontSize: '12px', color: 'var(--color-gray-200)', marginTop: '12px' }}>
+                      Desbloqueado el {new Date(a.awardedAt).toLocaleDateString('es-EC')}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
             );
           })}
         </div>

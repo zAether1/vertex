@@ -1,7 +1,7 @@
-/**
- * Vertex — Registration API
+﻿/**
+ * Vertex â€” Registration API
  *
- * POST /api/auth/register — Create a new user account
+ * POST /api/auth/register â€” Create a new user account
  *
  * SECURITY:
  * - Password hashed with bcrypt (12 rounds)
@@ -13,7 +13,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/db';
-import { users, profiles } from '@/lib/db/schema';
+import { users, profiles, pointAccounts } from '@/lib/db/schema';
 import { eq } from 'drizzle-orm';
 import { hashPassword, checkRateLimit } from '@/lib/security';
 import { createPointAccount } from '@/lib/services/points';
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
 
     if (existingProfile) {
       return NextResponse.json(
-        { error: 'Este nombre de usuario ya está en uso' },
+        { error: 'Este nombre de usuario ya estÃ¡ en uso' },
         { status: 409 }
       );
     }
@@ -82,11 +82,15 @@ export async function POST(req: NextRequest) {
         displayAlias: displayAlias || username,
       });
 
+      await tx.insert(pointAccounts).values({
+        userId: newUser.id,
+        balance: 0,
+        totalEarned: 0,
+        totalSpent: 0,
+      });
+
       return newUser;
     });
-
-    // Create point account (outside tx, non-critical)
-    await createPointAccount(result.id);
 
     await createAuditLog({
       action: 'USER_REGISTER',
@@ -106,3 +110,4 @@ export async function POST(req: NextRequest) {
     return serverErrorResponse();
   }
 }
+

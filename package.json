@@ -7,12 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:unit": "vitest run -c vitest.config.ts", "test:integration": "vitest run -c vitest.integration.config.ts", "test": "pnpm run test:unit"
+    "test:unit": "vitest run -c vitest.config.ts",
+    "test:integration": "vitest run -c vitest.integration.config.ts",
+    "test": "pnpm run test:unit"
   },
   "dependencies": {
     "@types/pg": "^8.23.1",
     "bcryptjs": "^2.4.3",
-    "drizzle-orm": "^0.29.5",
+    "drizzle-orm": "^0.33.0",
     "gsap": "^3.12.5",
     "lucide-react": "^0.439.0",
     "next": "14.2.15",
@@ -38,4 +40,3 @@
     "vitest": "^5.0.1"
   }
 }
-

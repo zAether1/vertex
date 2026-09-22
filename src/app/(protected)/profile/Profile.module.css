@@ -1,0 +1,162 @@
+﻿.page {
+  padding: 24px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.title {
+  font-family: var(--font-display, inherit);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0 0 4px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--color-gray-200, #a3abbb);
+  margin: 0;
+}
+
+.card {
+  margin-bottom: 24px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 24px;
+}
+
+.profileHeader {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.avatarWrap {
+  position: relative;
+  width: 96px;
+  height: 96px;
+}
+
+.avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(179, 182, 189, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--color-gray-200, #a3abbb);
+  overflow: hidden;
+}
+
+.avatarBtn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-blue-cyan-500, #0075ff);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: transform 0.15s;
+}
+
+.avatarBtn:hover {
+  transform: scale(1.05);
+}
+
+.info {
+  flex: 1;
+}
+
+.infoTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.infoSubtitle {
+  font-size: 14px;
+  color: var(--color-gray-200, #a3abbb);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-gray-200, #a3abbb);
+}
+
+.textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(179, 182, 189, 0.05);
+  border: 1px solid rgba(179, 182, 189, 0.1);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.15s;
+  min-height: 100px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.textarea:focus {
+  border-color: var(--color-blue-cyan-500, #0075ff);
+}
+
+.hint {
+  font-size: 12px;
+  color: var(--color-gray-300, #818794);
+}
+
+.btnSave {
+  align-self: flex-start;
+}
+
+.dangerSection {
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(179, 182, 189, 0.08);
+}
+
+.btnDanger {
+  background: transparent !important;
+  border: 1px solid var(--color-red-500, #ff0101) !important;
+  color: var(--color-red-500, #ff0101) !important;
+}
+
+.btnDanger:hover {
+  background: rgba(255, 1, 1, 0.1) !important;
+}

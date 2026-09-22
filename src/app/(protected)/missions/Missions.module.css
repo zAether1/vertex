@@ -1,0 +1,124 @@
+﻿.page {
+  padding: 24px;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-family: var(--font-display, inherit);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0 0 4px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--color-gray-200, #a3abbb);
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 20px;
+}
+
+.missionCard {
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.missionCardCompleted {
+  border-color: var(--color-green-500, #00d95b);
+}
+
+.iconWrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: rgba(0, 117, 255, 0.15);
+  color: var(--color-blue-cyan-500, #0075ff);
+}
+
+.iconWrapCompleted {
+  background: rgba(0, 217, 91, 0.15);
+  color: var(--color-green-500, #00d95b);
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin: 0 0 2px 0;
+}
+
+.desc {
+  font-size: 12px;
+  color: var(--color-gray-200, #a3abbb);
+  line-height: 1.5;
+  margin: 0 0 8px 0;
+}
+
+.reward {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-blue-cyan-500, #0075ff);
+  background: rgba(0, 117, 255, 0.15);
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.rewardCompleted {
+  background: rgba(0, 217, 91, 0.15);
+  color: var(--color-green-500, #00d95b);
+}
+
+.progressSection {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(179, 182, 189, 0.08);
+}
+
+.progressLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--color-gray-200, #a3abbb);
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.progressBar {
+  height: 6px;
+  background: rgba(179, 182, 189, 0.08);
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--color-blue-cyan-500, #0075ff);
+  border-radius: 9999px;
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progressFillCompleted {
+  background: var(--color-green-500, #00d95b);
+}

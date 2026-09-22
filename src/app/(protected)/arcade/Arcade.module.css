@@ -1,0 +1,173 @@
+﻿.page {
+  padding: 24px;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-family: var(--font-display, inherit);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0 0 4px 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: var(--color-gray-200, #a3abbb);
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 20px;
+}
+
+.arcadeCard {
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.cardIcon {
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(179, 182, 189, 0.05);
+  border-bottom: 1px solid rgba(179, 182, 189, 0.08);
+}
+
+.cardBody {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.cardName {
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.cardDesc {
+  font-size: 14px;
+  color: var(--color-gray-200, #a3abbb);
+  margin-bottom: 12px;
+  line-height: 1.5;
+  flex: 1;
+}
+
+.cardMeta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  color: var(--color-gray-300, #818794);
+  margin-bottom: 16px;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.betSection {
+  margin-bottom: 20px;
+}
+
+.betLabel {
+  font-size: 14px;
+  color: var(--color-gray-200, #a3abbb);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.choiceGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.choiceGridThree {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.choiceBtn {
+  background: rgba(179, 182, 189, 0.05);
+  border: 1px solid rgba(179, 182, 189, 0.1);
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-gray-200, #a3abbb);
+  transition: all 0.15s;
+}
+
+.choiceBtn:hover:not(:disabled) {
+  background: rgba(179, 182, 189, 0.1);
+}
+
+.choiceActive {
+  background: rgba(0, 117, 255, 0.15);
+  border-color: var(--color-blue-cyan-500, #0075ff);
+  color: var(--color-blue-cyan-500, #0075ff);
+}
+
+.result {
+  padding: 24px 0;
+  text-align: center;
+}
+
+.resultIcon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 12px;
+}
+
+.resultTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.resultAmount {
+  font-size: 18px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 64px 0;
+}
+
+.emptyIcon {
+  margin: 0 auto 16px;
+  color: var(--color-gray-300, #818794);
+  opacity: 0.4;
+}
+
+.emptyTitle {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-gray-200, #a3abbb);
+  margin-bottom: 4px;
+}
+
+.emptyDesc {
+  font-size: 14px;
+  color: var(--color-gray-300, #818794);
+}

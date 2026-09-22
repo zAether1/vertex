@@ -1,5 +1,5 @@
-/**
- * Vertex — Point Economy Service
+﻿/**
+ * Vertex â€” Point Economy Service
  *
  * THE most critical service in the platform. All point mutations
  * go through this module. No other code should modify point_accounts directly.
@@ -18,7 +18,7 @@ import { pointAccounts, pointTransactions, transactionTypeEnum } from '@/lib/db/
 import { eq, sql } from 'drizzle-orm';
 import { generateIdempotencyKey } from '@/lib/security';
 
-/* ─── Types ─────────────────────────────────────────────── */
+/* â”€â”€â”€ Types â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 export type TransactionType = (typeof transactionTypeEnum.enumValues)[number];
 
@@ -42,7 +42,7 @@ export interface PointOperationResult {
   error?: string;
 }
 
-/* ─── Core: Execute Point Operation (Atomic) ────────────── */
+/* â”€â”€â”€ Core: Execute Point Operation (Atomic) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 /**
  * Executes a point operation atomically.
@@ -52,13 +52,15 @@ export interface PointOperationResult {
  */
 export async function executePointOperation(
   input: PointOperationInput,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dbClient: any = db
 ): Promise<PointOperationResult> {
   const idempotencyKey = input.idempotencyKey || generateIdempotencyKey();
 
   try {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const runOp = async (tx: any) => {
-      // 1. Check idempotency — prevent duplicate operations
+      // 1. Check idempotency â€” prevent duplicate operations
       const existingTx = await tx.query.pointTransactions.findFirst({
         where: eq(pointTransactions.idempotencyKey, idempotencyKey),
       });
@@ -170,7 +172,7 @@ export async function executePointOperation(
   }
 }
 
-/* ─── Convenience Functions ─────────────────────────────── */
+/* â”€â”€â”€ Convenience Functions â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 
 export async function grantPoints(
   userId: string,
@@ -235,3 +237,7 @@ export async function createPointAccount(userId: string) {
     .returning();
   return account;
 }
+
+
+
+

@@ -1,0 +1,73 @@
+﻿.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+}
+
+.inputControl {
+  height: 56px; /* var(--size-control-xl) */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background-color: var(--input-color-bg-default, rgba(255, 255, 255, 0.05));
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: border-color 0.1s ease, background-color 0.1s ease;
+  padding: 0 16px;
+}
+
+.inputControl:focus-within {
+  border-color: var(--color-blue-cyan-500, #0075ff);
+}
+
+.inputControl:hover {
+  background-color: var(--input-color-bg-hover, rgba(255, 255, 255, 0.08));
+}
+
+.inputElement {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  font-family: var(--font-primary);
+  font-size: 16px;
+  outline: none;
+}
+
+.inputElement::placeholder {
+  color: var(--color-gray-200, #a3abbb);
+  opacity: 1;
+}
+
+.inputElement:focus::placeholder {
+  opacity: 0.5;
+}
+
+.inputLabel {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--color-gray-200, #a3abbb);
+  pointer-events: none;
+  transition: transform 0.2s ease, font-size 0.2s ease;
+  font-size: 16px;
+}
+
+.inputElement:focus ~ .inputLabel,
+.inputElement:not(:placeholder-shown) ~ .inputLabel {
+  transform: translateY(-24px) scale(0.85);
+  transform-origin: left top;
+}
+
+.error {
+  border-color: var(--color-red-500, #ff0101) !important;
+}
+
+.errorMessage {
+  color: var(--color-red-500, #ff0101);
+  font-size: 12px;
+  margin-top: 4px;
+}

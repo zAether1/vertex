@@ -1,0 +1,39 @@
+﻿.card {
+  background-color: var(--color-gray-800, #1d1e20);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 20px 24px 16px;
+  border-bottom: 1px solid rgba(179, 182, 189, 0.08);
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.description {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  color: var(--color-gray-200, #a3abbb);
+}
+
+.content {
+  padding: 24px;
+  flex-grow: 1;
+}
+
+.footer {
+  padding: 16px 24px;
+  border-top: 1px solid rgba(179, 182, 189, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+}
