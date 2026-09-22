@@ -1,68 +1,371 @@
-@import './1win-tokens.css';
+/*
+ * ═══════════════════════════════════════════════════════════
+ * VERTEX — Design System
+ * ═══════════════════════════════════════════════════════════
+ *
+ * A premium, dark-first design system for the Vertex rewards
+ * platform. Inspired by fintech dashboards and gaming UI,
+ * but with its own distinct identity.
+ *
+ * Color philosophy: Deep neutrals with violet/cyan accents.
+ * Typography: Clean, modern, highly readable.
+ * Spacing: 4px base grid system.
+ * Depth: Subtle layering through background tints and shadows.
+ */
 
-:root {
-  --main-loader-bg: #141415;
-  --main-loader-sidebar-bg: rgba(179, 182, 189, 0.08);
-  --main-loader-skeleton-color: linear-gradient(90deg, rgba(179, 182, 189, 0.08) 8%, rgba(179, 182, 189, 0.12) 16%, rgba(179, 182, 189, 0.08) 32%);
-  --main-loader-caption-color: #9aa1b1;
-  --reserved-fonts: 'Poppins', ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'Noto Sans', sans-serif;
-  --font-primary: 'Inter', var(--reserved-fonts);
-  --font-display: 'Coolvetica', var(--reserved-fonts);
+/* ─── CSS Reset ─────────────────────────────────────────── */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-  background-color: var(--main-loader-bg);
-  font-family: var(--font-primary);
-  color: #ffffff;
-}
-
-body {
-  margin: 0;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  font-size: 16px;
+  scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-* {
-  box-sizing: border-box;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background-color: rgba(179, 182, 189, 0.2); border-radius: 10px; }
-::-webkit-scrollbar-thumb:hover { background-color: rgba(179, 182, 189, 0.4); }
-
-/* Main Loader Layout - Extracted directly from template */
-.main-loader {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+body {
   min-height: 100vh;
+  line-height: 1.6;
+  font-family: var(--font-primary);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
 }
-.main-loader__body {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
 }
-.main-loader__main {
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* ─── Design Tokens ─────────────────────────────────────── */
+
+:root {
+  /* ── Typography ─────────────────────────────────── */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --font-display: 'Outfit', 'Inter', sans-serif;
+
+  /* Font sizes — modular scale (1.2 ratio) */
+  --text-xs: 0.694rem;    /* 11.1px */
+  --text-sm: 0.833rem;    /* 13.3px */
+  --text-base: 1rem;      /* 16px */
+  --text-md: 1.125rem;    /* 18px */
+  --text-lg: 1.35rem;     /* 21.6px */
+  --text-xl: 1.62rem;     /* 25.9px */
+  --text-2xl: 1.944rem;   /* 31.1px */
+  --text-3xl: 2.333rem;   /* 37.3px */
+  --text-4xl: 2.8rem;     /* 44.8px */
+  --text-5xl: 3.36rem;    /* 53.7px */
+
+  /* Font weights */
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Line heights */
+  --leading-tight: 1.2;
+  --leading-snug: 1.35;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  /* Letter spacing */
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  /* ── Color Palette ──────────────────────────────── */
+
+  /* Backgrounds — layered depth system */
+  --color-bg-primary: #0a0a0f;      /* deepest layer */
+  --color-bg-secondary: #111118;     /* cards, panels */
+  --color-bg-tertiary: #16161f;      /* elevated elements */
+  --color-bg-quaternary: #1c1c28;    /* hover states */
+  --color-bg-surface: #1e1e2a;       /* modals, dropdowns */
+  --color-bg-elevated: #242433;      /* active states */
+  --color-bg-overlay: rgba(0, 0, 0, 0.65);
+
+  /* Borders */
+  --color-border-primary: rgba(255, 255, 255, 0.06);
+  --color-border-secondary: rgba(255, 255, 255, 0.1);
+  --color-border-tertiary: rgba(255, 255, 255, 0.15);
+  --color-border-focus: var(--color-accent-primary);
+  --color-border-error: var(--color-error);
+
+  /* Text */
+  --color-text-primary: #e8e8ef;
+  --color-text-secondary: #9898ab;
+  --color-text-tertiary: #6b6b80;
+  --color-text-muted: #4a4a5e;
+  --color-text-inverse: #0a0a0f;
+
+  /* Accent — Violet (primary brand) */
+  --color-accent-primary: #8b5cf6;
+  --color-accent-primary-hover: #a78bfa;
+  --color-accent-primary-active: #7c3aed;
+  --color-accent-primary-subtle: rgba(139, 92, 246, 0.12);
+  --color-accent-primary-glow: rgba(139, 92, 246, 0.25);
+
+  /* Accent — Cyan (secondary/info) */
+  --color-accent-secondary: #22d3ee;
+  --color-accent-secondary-hover: #67e8f9;
+  --color-accent-secondary-subtle: rgba(34, 211, 238, 0.12);
+
+  /* Semantic colors */
+  --color-success: #34d399;
+  --color-success-subtle: rgba(52, 211, 153, 0.12);
+  --color-warning: #fbbf24;
+  --color-warning-subtle: rgba(251, 191, 36, 0.12);
+  --color-error: #f87171;
+  --color-error-subtle: rgba(248, 113, 113, 0.12);
+  --color-info: #60a5fa;
+  --color-info-subtle: rgba(96, 165, 250, 0.12);
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #8b5cf6 0%, #6366f1 50%, #22d3ee 100%);
+  --gradient-subtle: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(34, 211, 238, 0.08) 100%);
+  --gradient-card-hover: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(34, 211, 238, 0.04) 100%);
+  --gradient-glow: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(139, 92, 246, 0.06), transparent 40%);
+
+  /* ── Spacing (4px grid) ─────────────────────────── */
+  --space-0: 0;
+  --space-1: 0.25rem;    /* 4px */
+  --space-2: 0.5rem;     /* 8px */
+  --space-3: 0.75rem;    /* 12px */
+  --space-4: 1rem;       /* 16px */
+  --space-5: 1.25rem;    /* 20px */
+  --space-6: 1.5rem;     /* 24px */
+  --space-8: 2rem;       /* 32px */
+  --space-10: 2.5rem;    /* 40px */
+  --space-12: 3rem;      /* 48px */
+  --space-16: 4rem;      /* 64px */
+  --space-20: 5rem;      /* 80px */
+  --space-24: 6rem;      /* 96px */
+
+  /* ── Sizing ─────────────────────────────────────── */
+  --size-sidebar: 260px;
+  --size-sidebar-collapsed: 72px;
+  --size-navbar: 64px;
+  --size-max-content: 1280px;
+  --size-max-wide: 1440px;
+
+  /* ── Border Radius ──────────────────────────────── */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ────────────────────────────────────── */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35), 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.25);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.5), 0 8px 16px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.2), 0 0 60px rgba(139, 92, 246, 0.1);
+  --shadow-glow-sm: 0 0 12px rgba(139, 92, 246, 0.15);
+
+  /* ── Transitions ────────────────────────────────── */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Z-Index Scale ──────────────────────────────── */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-navbar: 300;
+  --z-sidebar: 350;
+  --z-overlay: 400;
+  --z-modal: 500;
+  --z-toast: 600;
+  --z-tooltip: 700;
+}
+
+/* ─── Reduced Motion ────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Typography Utilities ──────────────────────────────── */
+
+.text-display {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+}
+
+.text-heading {
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-snug);
+}
+
+.text-body {
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-normal);
+}
+
+.text-label {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--color-text-tertiary);
+}
+
+.text-mono {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.text-gradient {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────── */
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-secondary);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-border-tertiary);
+}
+
+/* ─── Selection ─────────────────────────────────────────── */
+
+::selection {
+  background-color: var(--color-accent-primary-subtle);
+  color: var(--color-text-primary);
+}
+
+/* ─── Focus Ring ────────────────────────────────────────── */
+
+:focus-visible {
+  outline: 2px solid var(--color-accent-primary);
+  outline-offset: 2px;
+}
+
+/* ─── Skeleton Loader ───────────────────────────────────── */
+
+.skeleton {
   position: relative;
-  display: flex;
-  flex-grow: 1;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  overflow: hidden;
+  background-color: var(--color-bg-tertiary);
+  border-radius: var(--radius-md);
+}
+
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.04),
+    transparent
+  );
+  animation: skeleton-shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* ─── Container ─────────────────────────────────────────── */
+
+.container {
   width: 100%;
+  max-width: var(--size-max-content);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
 }
-@media (min-width: 1024px) {
-  .main-loader {
-    flex-direction: row;
-  }
-  .main-loader__body {
-    align-items: center;
-    padding: 0 48px;
-  }
-  .main-loader__main {
-    max-width: 1547px;
-    width: 100%;
-  }
+
+.container-wide {
+  max-width: var(--size-max-wide);
 }
+
+/* ─── Screen Reader Only ────────────────────────────────── */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ─── Noindex Meta for Private Routes ───────────────────── */
+/* Applied via Next.js metadata API, not CSS */

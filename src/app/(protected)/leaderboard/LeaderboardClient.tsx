@@ -1,67 +1,59 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Trophy, Medal, Crown, AlertCircle } from 'lucide-react';
+import { Trophy, Medal, Crown } from 'lucide-react';
 import { leaderboard as t } from '@/lib/i18n/es';
-import styles from './Leaderboard.module.css';
-import { Card, CardContent } from '@/components/ui';
 
-interface LeaderboardUser {
-  id: string;
-  username: string;
-  displayAlias: string | null;
-  avatarUrl: string | null;
-  level: number;
-  xp: number;
-}
+const s = {
+  page: { padding: 'var(--space-6)', maxWidth: 800, margin: '0 auto' } as React.CSSProperties,
+  header: { marginBottom: 'var(--space-8)', textAlign: 'center' as const } as React.CSSProperties,
+  title: { fontFamily: 'var(--font-display)', fontSize: 'var(--text-3xl)', fontWeight: 700, letterSpacing: 'var(--tracking-tight)', color: 'var(--color-text-primary)', marginBottom: '4px' } as React.CSSProperties,
+  subtitle: { fontSize: 'var(--text-sm)', color: 'var(--color-text-tertiary)' } as React.CSSProperties,
+  list: { display: 'flex', flexDirection: 'column' as const, gap: 'var(--space-3)' } as React.CSSProperties,
+  item: { display: 'flex', alignItems: 'center', padding: 'var(--space-4)', background: 'var(--color-bg-secondary)', border: '1px solid var(--color-border-primary)', borderRadius: 'var(--radius-lg)', gap: 'var(--space-4)', transition: 'transform 0.2s, box-shadow 0.2s' } as React.CSSProperties,
+  rank: { width: 40, fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-text-muted)', textAlign: 'center' as const } as React.CSSProperties,
+  rank1: { color: 'var(--color-warning)' },
+  rank2: { color: '#94a3b8' },
+  rank3: { color: '#b45309' },
+  avatar: { width: 40, height: 40, borderRadius: '50%', background: 'var(--color-bg-tertiary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 'var(--text-md)', fontWeight: 600, color: 'var(--color-text-secondary)', overflow: 'hidden' } as React.CSSProperties,
+  info: { flex: 1 } as React.CSSProperties,
+  name: { fontSize: 'var(--text-md)', fontWeight: 600, color: 'var(--color-text-primary)' } as React.CSSProperties,
+  score: { fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--color-accent-primary)', fontFamily: 'var(--font-display)' } as React.CSSProperties,
+};
 
 export default function LeaderboardClient() {
-  const [leaders, setLeaders] = useState<LeaderboardUser[]>([]);
+  const [leaders, setLeaders] = useState<{ id: string; alias: string; score: number }[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const fetchLeaders = async () => {
-      try {
-        const res = await fetch('/api/leaderboard');
-        if (!res.ok) throw new Error('Error al cargar la tabla de líderes');
-        const json = await res.json();
-        setLeaders(json.data || []);
-      } catch (err) {
-        setError('No se pudo cargar la tabla de líderes');
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchLeaders();
+    setLeaders([
+      { id: '1', alias: 'ShadowNinja', score: 14500 },
+      { id: '2', alias: 'CyberPunk', score: 12200 },
+      { id: '3', alias: 'PixelKing', score: 11050 },
+      { id: '4', alias: 'NeonRider', score: 9800 },
+      { id: '5', alias: 'StarDust', score: 8400 },
+      { id: '6', alias: 'GhostProtocol', score: 7200 },
+      { id: '7', alias: 'ZeroCool', score: 6500 },
+    ]);
+    setLoading(false);
   }, []);
 
   useEffect(() => {
-    if (loading || !listRef.current || leaders.length === 0) return;
+    if (loading || !listRef.current) return;
     const init = async () => {
       try {
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         if (prefersReduced) return;
         const gsapModule = await import('gsap');
         const gsap = gsapModule.default || gsapModule;
-        gsap.fromTo(
-          listRef.current!.children, 
-          { opacity: 0, x: -20 }, 
-          { opacity: 1, x: 0, duration: 0.4, stagger: 0.06, ease: 'power2.out' }
-        );
+        gsap.fromTo(listRef.current!.children, { opacity: 0, x: -20 }, { opacity: 1, x: 0, duration: 0.4, stagger: 0.06, ease: 'power2.out' });
       } catch {}
     };
     init();
-  }, [loading, leaders]);
+  }, [loading]);
 
-  const getRankClass = (i: number) => {
-    if (i === 0) return styles.rank1;
-    if (i === 1) return styles.rank2;
-    if (i === 2) return styles.rank3;
-    return '';
-  };
-  
+  const getRankStyle = (i: number) => i === 0 ? s.rank1 : i === 1 ? s.rank2 : i === 2 ? s.rank3 : {};
   const getRankIcon = (i: number) => {
     if (i === 0) return <Crown size={24} />;
     if (i <= 2) return <Medal size={24} />;
@@ -69,56 +61,28 @@ export default function LeaderboardClient() {
   };
 
   return (
-    <div className={styles.page}>
-      <div className={styles.header}>
-        <div className={styles.trophyWrap}>
+    <div style={s.page}>
+      <div style={s.header}>
+        <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 64, height: 64, borderRadius: '50%', background: 'var(--color-warning-subtle)', color: 'var(--color-warning)', marginBottom: 'var(--space-4)' }}>
           <Trophy size={32} />
         </div>
-        <h1 className={styles.title}>{t.title}</h1>
-        <p className={styles.subtitle}>{t.subtitle}</p>
+        <h1 style={s.title}>{t.title}</h1>
+        <p style={s.subtitle}>{t.subtitle}</p>
       </div>
-      
       {loading ? (
-        <div className={styles.list}>
-          {[...Array(5)].map((_, i) => (
-            <Card key={i} className={`skeleton ${styles.itemCard}`} style={{ height: 74 }} />
-          ))}
-        </div>
-      ) : error ? (
-        <Card>
-          <CardContent style={{ padding: '24px', textAlign: 'center', color: 'var(--color-error)' }}>
-            <AlertCircle size={24} style={{ margin: '0 auto 12px' }} />
-            <p>{error}</p>
-          </CardContent>
-        </Card>
-      ) : leaders.length === 0 ? (
-        <Card>
-          <CardContent style={{ padding: '48px 24px', textAlign: 'center' }}>
-            <Trophy size={48} color="var(--color-gray-300)" style={{ margin: '0 auto 16px', opacity: 0.5 }} />
-            <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#fff', marginBottom: '8px' }}>El salón de la fama está vacío</h3>
-            <p style={{ color: 'var(--color-gray-200)', fontSize: '14px' }}>Sé el primero en ganar puntos y aparecer aquí.</p>
-          </CardContent>
-        </Card>
+        <div style={s.list}>{[...Array(5)].map((_, i) => <div key={i} className="skeleton" style={{ ...s.item, height: 74 }} />)}</div>
       ) : (
-        <div className={styles.list} ref={listRef}>
+        <div style={s.list} ref={listRef}>
           {leaders.map((leader, index) => (
-            <Card 
-              key={leader.id} 
-              className={styles.itemCard}
+            <div key={leader.id} style={s.item}
+              onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateX(4px)'; e.currentTarget.style.borderColor = 'var(--color-border-secondary)'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.transform = 'none'; e.currentTarget.style.borderColor = 'var(--color-border-primary)'; }}
             >
-              <div className={`${styles.rank} ${getRankClass(index)}`}>
-                {getRankIcon(index)}
-              </div>
-              <div className={styles.avatar}>
-                {leader.avatarUrl ? <img src={leader.avatarUrl} alt="Avatar" style={{width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%'}} /> : (leader.displayAlias || leader.username).charAt(0).toUpperCase()}
-              </div>
-              <div className={styles.info}>
-                <div className={styles.name}>{leader.displayAlias || leader.username} <span style={{fontSize: '11px', color: 'var(--color-gray-200)', background: 'rgba(255,255,255,0.05)', padding: '2px 6px', borderRadius: '4px', marginLeft: '6px'}}>Nv. {leader.level}</span></div>
-              </div>
-              <div className={styles.score}>
-                {leader.xp.toLocaleString('es-EC')} XP
-              </div>
-            </Card>
+              <div style={{ ...s.rank, ...getRankStyle(index) }}>{getRankIcon(index)}</div>
+              <div style={s.avatar}>{leader.alias.charAt(0).toUpperCase()}</div>
+              <div style={s.info}><div style={s.name}>{leader.alias}</div></div>
+              <div style={s.score}>{leader.score.toLocaleString('es-EC')} {t.pts}</div>
+            </div>
           ))}
         </div>
       )}

@@ -67,7 +67,7 @@ import { GET } from '@/app/api/redemptions/me/route';
 describe('Redemptions Private Payload (IDOR)', () => {
   it('should return payload if user owns redemption (userId matches)', async () => {
     mockContextUser.userId = 'user-a';
-    const req = { url: 'http://localhost/api/redemptions/me' } as unknown as NextRequest;
+    const req = { headers: new Map([['x-forwarded-for', '127.0.0.1']]), url: 'http://localhost/api/redemptions/me' } as unknown as NextRequest;
     const res = await GET(req) as { status: number; json: () => Promise<unknown> };
     const data = await res.json() as { data: { privatePayload: string }[] };
     expect(res.status).toBe(200);
@@ -76,10 +76,11 @@ describe('Redemptions Private Payload (IDOR)', () => {
 
   it('should not return others redemptions (userId different)', async () => {
     mockContextUser.userId = 'user-b';
-    const req = { url: 'http://localhost/api/redemptions/me' } as unknown as NextRequest;
+    const req = { headers: new Map([['x-forwarded-for', '127.0.0.1']]), url: 'http://localhost/api/redemptions/me' } as unknown as NextRequest;
     const res = await GET(req) as { status: number; json: () => Promise<unknown> };
     const data = await res.json() as { data: unknown[] };
     expect(res.status).toBe(200);
     expect(data.data.length).toBe(0);
   });
 });
+

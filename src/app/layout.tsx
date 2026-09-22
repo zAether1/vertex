@@ -1,12 +1,6 @@
 ﻿import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import Sidebar from '@/components/layout/Sidebar';
-import Header from '@/components/layout/Header';
-import { auth } from '@/lib/auth';
-import { db } from '@/lib/db';
-import { profiles, pointAccounts } from '@/lib/db/schema';
-import { eq } from 'drizzle-orm';
 
 const inter = localFont({
   src: [
@@ -49,48 +43,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const session = await auth();
-
-  let username = undefined;
-  let avatarUrl = null;
-  let balance = undefined;
-
-  if (session?.user) {
-    try {
-      const [profile, account] = await Promise.all([
-        db.query.profiles.findFirst({
-          where: eq(profiles.userId, session.user.id),
-        }),
-        db.query.pointAccounts.findFirst({
-          where: eq(pointAccounts.userId, session.user.id),
-        }),
-      ]);
-
-      if (profile) {
-        username = profile.displayAlias || profile.username;
-        avatarUrl = profile.avatarUrl;
-      }
-      if (account) {
-        balance = account.balance;
-      }
-    } catch (error) {
-      console.error('[Layout] Failed to fetch profile/balance');
-    }
-  }
-
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="es" className={`${inter.variable} ${coolvetica.variable}`}>
       <body>
-        <div className="main-loader">
-          <Sidebar />
-          <div className="main-loader__body">
-            <Header username={username} avatarUrl={avatarUrl} balance={balance} />
-            <div className="main-loader__main">
-              {children}
-            </div>
-          </div>
-        </div>
+        {children}
       </body>
     </html>
   );
